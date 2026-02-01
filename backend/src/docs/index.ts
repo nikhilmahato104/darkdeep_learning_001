@@ -2,6 +2,8 @@ import { helloSwagger } from "./hello.swagger";
 import { studentSwagger } from "././StudentDoc/student.swagger";
 import {emailSwagger} from "./EmialSwager/email.swagger"
 import { openaiSwagger } from "./AIDoc/openai.swagger";
+import { deviceInfoSwagger } from "../docs/deviceInfo/deviceInfo.swagger";
+import { DeviceInfo } from "../models/DeviceInfo/deviceInfo.model";
 // const swaggerDocument = {
 //   openapi: "3.0.0",
 //   info: {
@@ -48,6 +50,7 @@ const swaggerDocument = {
     ...studentSwagger,
     ...emailSwagger,
     ...openaiSwagger,
+    ...deviceInfoSwagger,
   },
 };
 
