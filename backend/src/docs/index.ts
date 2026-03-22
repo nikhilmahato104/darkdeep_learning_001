@@ -4,6 +4,8 @@ import {emailSwagger} from "./EmialSwager/email.swagger"
 import { openaiSwagger } from "./AIDoc/openai.swagger";
 import { deviceInfoSwagger } from "../docs/deviceInfo/deviceInfo.swagger";
 import { DeviceInfo } from "../models/DeviceInfo/deviceInfo.model";
+import { paymentSwagger } from "./payemnet/payment.swagger";
+
 // const swaggerDocument = {
 //   openapi: "3.0.0",
 //   info: {
@@ -51,6 +53,7 @@ const swaggerDocument = {
     ...emailSwagger,
     ...openaiSwagger,
     ...deviceInfoSwagger,
+      ...paymentSwagger, 
   },
 };
 
