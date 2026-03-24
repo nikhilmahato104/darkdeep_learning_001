@@ -20,12 +20,12 @@ const seedAdmin = async () => {
     }
 
     // 🔐 Hash password HERE (IMPORTANT)
-    const hashedPassword = await bcrypt.hash("Puja@9661", 10);
+    const hashedPassword = await bcrypt.hash("Password123!", 10);
 
     // ✅ Create admin
     const admin = await Admin.create({
-      email: "nikhilmahato104@gmail.com",
-      mobile: "9304260733",
+      email: "n@gmail.com",
+      mobile: "1234567890",
       password: hashedPassword,
     });
 
