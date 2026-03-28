@@ -1,12 +1,12 @@
 import { helloSwagger } from "./hello.swagger";
 import { studentSwagger } from "././StudentDoc/student.swagger";
-import {emailSwagger} from "./EmialSwager/email.swagger"
+import { emailSwagger } from "./EmialSwager/email.swagger"
 import { openaiSwagger } from "./AIDoc/openai.swagger";
 import { deviceInfoSwagger } from "../docs/deviceInfo/deviceInfo.swagger";
 import { DeviceInfo } from "../models/DeviceInfo/deviceInfo.model";
 import { paymentSwagger } from "./payemnet/payment.swagger";
-import {roleSwagger} from "./RoleManagement/roleManagement.swagger";
-import {adminSwagger} from "./admin/admin.swagger";
+import { roleSwagger } from "./RoleManagement/roleManagement.swagger";
+import { adminSwagger } from "./admin/admin.swagger";
 
 const swaggerDocument = {
   openapi: "3.0.0",
@@ -20,7 +20,8 @@ const swaggerDocument = {
     {
       url:
         process.env.NODE_ENV === "production"
-          ? "https://darkdeep-learning-001.onrender.com"
+          // ? "https://darkdeep-learning-001.onrender.com"
+          ? "https://api.succesly.in"
           : "http://localhost:5000",
       description: "API Server",
     },
