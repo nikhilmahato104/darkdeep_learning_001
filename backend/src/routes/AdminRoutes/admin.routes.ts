@@ -10,4 +10,7 @@ router.post("/login", AdminController.login);
 // 🔒 PROTECTED
 router.get("/profile", authGuard, AdminController.profile);
 
+
+router.post("/create", authGuard, AdminController.createAdmin);
+
 export default router;
