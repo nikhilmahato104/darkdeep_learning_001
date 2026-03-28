@@ -38,7 +38,7 @@ export const AdminService = {
     return {
       message: "Login successful",
       token,
-      admin: {
+      data: {
         id: admin._id,
         name: admin.name,
         email: admin.email,
