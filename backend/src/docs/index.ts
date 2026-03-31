@@ -5,6 +5,7 @@ import { openaiSwagger } from "./AIDoc/openai.swagger";
 import { deviceInfoSwagger } from "../docs/deviceInfo/deviceInfo.swagger";
 import { DeviceInfo } from "../models/DeviceInfo/deviceInfo.model";
 import { paymentSwagger } from "./payemnet/payment.swagger";
+import {moduleSwagger} from "./Module/module.swagger"
 import { roleSwagger } from "./RoleManagement/roleManagement.swagger";
 import { adminSwagger } from "./admin/admin.swagger";
 
@@ -52,6 +53,7 @@ const swaggerDocument = {
     ...openaiSwagger,
     ...deviceInfoSwagger,
     ...paymentSwagger,
+    ...moduleSwagger,
     ...roleSwagger,
     ...adminSwagger,
   },
