@@ -61,16 +61,35 @@ export const roleSwagger = {
   },
 
   "/api/role/updateRole/{id}": {
-    patch: {
-      tags: ["Role Management"],
-      summary: "Update role",
-      security: [{ bearerAuth: [] }], // 🔒 ADD THIS
-      parameters: [
-        { name: "id", in: "path", required: true, schema: { type: "string" } },
-      ],
-      responses: { 200: { description: "Updated" } },
+  patch: {
+    tags: ["Role Management"],
+    summary: "Update role",
+    security: [{ bearerAuth: [] }],
+    parameters: [
+      { name: "id", in: "path", required: true, schema: { type: "string" } },
+    ],
+    requestBody: {
+      required: true,
+      content: {
+        "application/json": {
+          example: {
+            role_name: "Updated Manager",
+            role_access: [
+              {
+                module_id: "user-management",
+                create: true,
+                edit: false,
+                view: true,
+                delete: false,
+              },
+            ],
+          },
+        },
+      },
     },
+    responses: { 200: { description: "Updated" } },
   },
+},
 
   "/api/role/delete": {
     delete: {
