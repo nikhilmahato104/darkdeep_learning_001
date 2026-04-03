@@ -11,18 +11,19 @@ const AdminSchema = new mongoose.Schema(
     role_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Role",
+      required: true,
     },
 
     role: {
       type: String,
-      enum: ["superadmin", "admin", "manager"],
-
+      enum: ["Admin", "Manager"],
+      required: true,
     },
 
     status: {
       type: String,
-      enum: ["active", "inactive", "pending", "Cancelled", "Password Not set"],
-      default: "Password Not set",
+      enum: ["active", "inactive"],
+      default: "active",
     },
   },
   { timestamps: true }

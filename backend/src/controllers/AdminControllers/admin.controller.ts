@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { AdminService } from "../../services/AdminService/admin.service";
 
-
-
 export const AdminController = {
+
   login: async (req: Request, res: Response) => {
     try {
       const result = await AdminService.login(req.body);
@@ -23,11 +22,31 @@ export const AdminController = {
   },
 
   createAdmin: async (req: Request, res: Response) => {
-  try {
-    const result = await AdminService.createAdmin(req.body);
-    res.status(201).json(result);
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
-}
+    try {
+      const result = await AdminService.createAdmin(req.body);
+      res.status(201).json(result);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  },
+
+  getAllAdmins: async (req: Request, res: Response) => {
+    const result = await AdminService.getAllAdmins();
+    res.json(result);
+  },
+
+  getAdminById: async (req: Request, res: Response) => {
+    const result = await AdminService.getAdminById(req.params.id);
+    res.json(result);
+  },
+
+  updateAdmin: async (req: Request, res: Response) => {
+    const result = await AdminService.updateAdmin(req.params.id, req.body);
+    res.json(result);
+  },
+
+  deleteAdmin: async (req: Request, res: Response) => {
+    const result = await AdminService.deleteAdmin(req.params.id);
+    res.json(result);
+  },
 };

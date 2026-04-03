@@ -1,5 +1,5 @@
 import { Admin } from "../../models/Admin/admin.model";
-import { Role } from "../../models/RoleManagement/role.model"; // ✅ important
+import { Role } from "../../models/RoleManagement/role.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -20,6 +20,10 @@ export const AdminService = {
 
     if (!admin) throw new Error("Invalid credentials");
 
+    if (admin.status !== "active") {
+      throw new Error("Account is inactive");
+    }
+
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) throw new Error("Invalid credentials");
 
@@ -28,8 +32,6 @@ export const AdminService = {
     const token = jwt.sign(
       {
         id: admin._id,
-        role: admin.role,
-        role_id: admin.role_id,
       },
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" }
@@ -44,6 +46,7 @@ export const AdminService = {
         email: admin.email,
         role: admin.role,
         role_id: admin.role_id,
+        status: admin.status,
         role_access: roleData?.role_access || [],
       },
     };
@@ -57,51 +60,68 @@ export const AdminService = {
     };
   },
 
-  // 🆕 CREATE ADMIN (🔥 YE MISSING THA)
+  // ➕ CREATE
   createAdmin: async (data: any) => {
     const { name, email, mobile, password, role_id } = data;
 
-    if (!email || !mobile || !password || !role_id) {
-      throw new Error("All fields are required");
-    }
-
-    // 🔍 DUPLICATE CHECK (🔥 IMPORTANT)
-    const existingAdmin = await Admin.findOne({
+    const exists = await Admin.findOne({
       $or: [{ email }, { mobile }],
     });
 
-    if (existingAdmin) {
-      if (existingAdmin.email === email) {
-        throw new Error("Email already exists");
-      }
-      if (existingAdmin.mobile === mobile) {
-        throw new Error("Mobile number already exists");
-      }
-    }
+    if (exists) throw new Error("Email or Mobile already exists");
 
-    // 🔍 role find
     const roleData = await Role.findById(role_id);
-    if (!roleData) {
-      throw new Error("Invalid role_id");
-    }
+    if (!roleData) throw new Error("Invalid role");
 
-    // 🔐 hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ create admin
-    const newAdmin = await Admin.create({
+    const admin = await Admin.create({
       name,
       email,
       mobile,
       password: hashedPassword,
-      role_id: roleData._id,
+      role_id,
       role: roleData.role_name,
     });
 
-    return {
-      message: "Admin created successfully",
-      admin: newAdmin,
-    };
+    return { message: "Admin created", admin };
   },
 
+  // 📄 GET ALL
+  getAllAdmins: async () => {
+    const admins = await Admin.find().populate("role_id");
+    return { admins };
+  },
+
+  // 📄 GET BY ID
+  getAdminById: async (id: string) => {
+    const admin = await Admin.findById(id).populate("role_id");
+    if (!admin) throw new Error("Admin not found");
+    return admin;
+  },
+
+  // ✏️ UPDATE
+  updateAdmin: async (id: string, data: any) => {
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+
+    if (data.role_id) {
+      const roleData = await Role.findById(data.role_id);
+      if (!roleData) throw new Error("Invalid role");
+      data.role = roleData.role_name;
+    }
+
+    const updated = await Admin.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+
+    return { message: "Admin updated", updated };
+  },
+
+  // ❌ DELETE
+  deleteAdmin: async (id: string) => {
+    await Admin.findByIdAndDelete(id);
+    return { message: "Admin deleted" };
+  },
 };
